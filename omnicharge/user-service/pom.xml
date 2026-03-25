@@ -42,7 +42,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- Validation — ADDED: fixes NoProviderFoundException warn -->
+        <!-- Validation — fixes NoProviderFoundException warn -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
@@ -66,17 +66,16 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- Eureka Jersey3 transport — FIXED version to match Spring Cloud 2025.1.1 -->
-        <dependency>
-            <groupId>com.netflix.eureka</groupId>
-            <artifactId>eureka-client-jersey3</artifactId>
-            <version>2.0.7</version>
-        </dependency>
-
         <!-- OpenFeign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- Resilience4j — circuit breaker for Feign calls -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
         </dependency>
 
         <!-- JWT -->
@@ -105,14 +104,14 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Swagger — FIXED: 3.x required for Spring Boot 4.x -->
+        <!-- Swagger — 3.x required for Boot 4.x -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>3.0.0</version>
         </dependency>
 
-        <!-- Zipkin Tracing — ADDED: required by case study observability -->
+        <!-- Zipkin Distributed Tracing -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
