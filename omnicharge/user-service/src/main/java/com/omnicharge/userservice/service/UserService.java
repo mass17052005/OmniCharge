@@ -22,7 +22,7 @@ public class UserService {
     public UserProfileResponse getProfile(String email) {
         User user = findByEmail(email);
         UserProfileResponse response = new UserProfileResponse();
-        response.setId(user.getId());
+        response.setUserId(user.getId());
         response.setName(user.getName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
