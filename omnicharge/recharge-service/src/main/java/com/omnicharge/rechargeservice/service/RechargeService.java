@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import com.omnicharge.rechargeservice.feign.UserServiceClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,11 +25,15 @@ public class RechargeService {
     private final RechargeRepository rechargeRepository;
     private final OperatorServiceClient operatorServiceClient;
     private final PaymentServiceClient paymentServiceClient;
+    private final UserServiceClient userServiceClient;
 
     public RechargeResponse initiateRecharge(RechargeRequestDto dto) {
 
+        UserProfileResponse userProfile = userServiceClient.getProfile();
+        Long userId = userProfile.getUserId();
+
         // Step 1 — validate plan via Feign
-        PlanResponse plan = operatorServiceClient.getPlanById(dto.getOperatorId(), dto.getPlanId());
+        PlanResponse plan = operatorServiceClient.getPlanById(dto.getPlanId());
         if (plan == null) {
             throw new RuntimeException("Operator service unavailable. Please try again.");
         }
@@ -38,9 +43,9 @@ public class RechargeService {
 
         // Step 2 — save recharge with CREATED status
         RechargeRequest recharge = RechargeRequest.builder()
-                .userId(dto.getUserId())
+                .userId(userId)
                 .mobileNumber(dto.getMobileNumber())
-                .operatorId(dto.getOperatorId())
+                .operatorId(plan.getOperatorId())
                 .planId(dto.getPlanId())
                 .amount(plan.getPrice())
                 .status(RechargeStatus.CREATED)
@@ -53,7 +58,7 @@ public class RechargeService {
 
         // Step 4 — call Payment Service via Feign
         PaymentRequest paymentRequest = new PaymentRequest(
-                recharge.getId(), recharge.getUserId(), recharge.getAmount());
+                recharge.getId(), recharge.getAmount());
         Object paymentResult = paymentServiceClient.processPayment(paymentRequest);
 
         log.info("Payment result for recharge {}: {}", recharge.getId(), paymentResult);

@@ -11,6 +11,5 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class PaymentRequest {
     private Long rechargeId;
-    private Long userId;
     private BigDecimal amount;
 }

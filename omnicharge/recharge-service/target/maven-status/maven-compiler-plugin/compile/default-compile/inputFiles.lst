@@ -7,12 +7,14 @@ E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\dto\
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\dto\PlanResponse.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\dto\RechargeRequestDto.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\dto\RechargeResponse.java
+E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\dto\UserProfileResponse.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\entity\RechargeRequest.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\enums\RechargeStatus.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\exception\GlobalExceptionHandler.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\exception\ResourceNotFoundException.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\feign\OperatorServiceClient.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\feign\PaymentServiceClient.java
+E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\feign\UserServiceClient.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\RechargeServiceApplication.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\repository\RechargeRepository.java
 E:\omnicharge\recharge-service\src\main\java\com\omnicharge\rechargeservice\security\JwtAuthFilter.java

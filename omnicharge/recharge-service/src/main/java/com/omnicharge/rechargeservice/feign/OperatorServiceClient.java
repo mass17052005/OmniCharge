@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "operator-service")
 public interface OperatorServiceClient {
 
-    @GetMapping("/api/operators/{operatorId}/plans/{planId}")
+    @GetMapping("/api/operators/plans/{planId}")
     @CircuitBreaker(name = "operatorService", fallbackMethod = "getPlanFallback")
-    PlanResponse getPlanById(@PathVariable Long operatorId, @PathVariable Long planId);
+    PlanResponse getPlanById(@PathVariable Long planId);
 
-    default PlanResponse getPlanFallback(Long operatorId, Long planId, Throwable t) {
+    default PlanResponse getPlanFallback(Long planId, Throwable t) {
         return null;
     }
 }
