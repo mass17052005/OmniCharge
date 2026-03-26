@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 @Data
@@ -18,10 +19,8 @@ import java.math.BigDecimal;
 public class PaymentRequest {
 
     @NotNull(message = "Recharge ID is required")
+    @Schema(description = "The unique ID of the Recharge you want to pay for", example = "1")
     private Long rechargeId;
-
-    @NotNull(message = "User ID is required")
-    private Long userId;
 
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "1.0", message = "Amount must be greater than zero")

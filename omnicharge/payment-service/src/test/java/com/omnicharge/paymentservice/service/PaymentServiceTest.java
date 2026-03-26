@@ -21,6 +21,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.omnicharge.paymentservice.feign.UserServiceClient;
+import com.omnicharge.paymentservice.dto.UserProfileResponse;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -36,11 +39,15 @@ class PaymentServiceTest {
     @Mock
     private RabbitTemplate rabbitTemplate;
 
+    @Mock
+    private UserServiceClient userServiceClient;
+
     @InjectMocks
     private PaymentService paymentService;
 
     private PaymentRequest request;
     private Transaction transaction;
+    private UserProfileResponse userProfile;
 
     @BeforeEach
     void setUp() {
@@ -48,8 +55,10 @@ class PaymentServiceTest {
         ReflectionTestUtils.setField(paymentService, "paymentSuccessRoutingKey", "payment.success");
         ReflectionTestUtils.setField(paymentService, "paymentFailedRoutingKey", "payment.failed");
 
+        userProfile = new UserProfileResponse();
+        userProfile.setUserId(1L);
+
         request = PaymentRequest.builder()
-                .userId(1L)
                 .rechargeId(101L)
                 .amount(new BigDecimal("299.00"))
                 .build();
@@ -67,6 +76,7 @@ class PaymentServiceTest {
 
     @Test
     void processPayment_Success() {
+        when(userServiceClient.getProfile()).thenReturn(userProfile);
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
         
         PaymentService spyService = spy(paymentService);
@@ -94,6 +104,7 @@ class PaymentServiceTest {
                 .createdAt(LocalDateTime.now())
                 .build();
                 
+        when(userServiceClient.getProfile()).thenReturn(userProfile);
         when(transactionRepository.save(any(Transaction.class))).thenReturn(failedTx);
         
         PaymentService spyService = spy(paymentService);

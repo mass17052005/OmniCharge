@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.omnicharge.paymentservice.feign.UserServiceClient;
+import com.omnicharge.paymentservice.dto.UserProfileResponse;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ public class PaymentService {
 
     private final TransactionRepository transactionRepository;
     private final RabbitTemplate rabbitTemplate;
+    private final UserServiceClient userServiceClient;
 
     @Value("${rabbitmq.exchange.name:omnicharge.exchange}")
     private String exchange;
@@ -37,7 +41,11 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponse processPayment(PaymentRequest request) {
-        log.info("Processing payment for user {}", request.getUserId());
+        
+        UserProfileResponse userProfile = userServiceClient.getProfile();
+        Long userId = userProfile.getUserId();
+
+        log.info("Processing payment for user {}", userId);
 
         // 1. Generate unique transaction ID
         String txnRef = UUID.randomUUID().toString().replace("-", "").substring(0, 16).toUpperCase();
@@ -48,7 +56,7 @@ public class PaymentService {
         // 3. Save to database
         Transaction transaction = Transaction.builder()
                 .txnRef(txnRef)
-                .userId(request.getUserId())
+                .userId(userId)
                 .rechargeId(request.getRechargeId())
                 .amount(request.getAmount())
                 .status(status)

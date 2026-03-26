@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.omnicharge.paymentservice.PaymentServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.31 s -- in com.omnicharge.paymentservice.PaymentServiceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 48.65 s -- in com.omnicharge.paymentservice.PaymentServiceApplicationTests
