@@ -30,6 +30,18 @@ public class UserService {
         return response;
     }
 
+    public UserProfileResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+        UserProfileResponse response = new UserProfileResponse();
+        response.setUserId(user.getId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        response.setPhone(user.getPhone());
+        response.setRole(user.getRole().name());
+        return response;
+    }
+
     public UserProfileResponse updateProfile(String email, UpdateProfileRequest request) {
         User user = findByEmail(email);
         user.setName(request.getName());
@@ -38,12 +50,17 @@ public class UserService {
         return getProfile(email);
     }
 
-    public List<?> getRechargeHistory(String email) {
+    public void deleteUser(String email) {
+        User user = findByEmail(email);
+        userRepository.delete(user);
+    }
+
+    public List<RechargeResponse> getRechargeHistory(String email) {
         User user = findByEmail(email);
         return rechargeServiceClient.getRechargesByUserId(user.getId());
     }
 
-    public List<?> getTransactionStatus(String email) {
+    public List<PaymentResponse> getTransactionStatus(String email) {
         User user = findByEmail(email);
         return paymentServiceClient.getTransactionsByUserId(user.getId());
     }

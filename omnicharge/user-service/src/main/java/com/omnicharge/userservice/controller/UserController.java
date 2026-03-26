@@ -38,17 +38,31 @@ public class UserController {
                 userService.updateProfile(userDetails.getUsername(), request));
     }
 
+    @Operation(summary = "Delete logged-in user account")
+    @DeleteMapping("/profile")
+    public ResponseEntity<String> deleteUser(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        userService.deleteUser(userDetails.getUsername());
+        return ResponseEntity.ok("User account deleted successfully");
+    }
+
     @Operation(summary = "Get recharge history of logged-in user")
     @GetMapping("/recharge-history")
-    public ResponseEntity<List<?>> getRechargeHistory(
+    public ResponseEntity<List<RechargeResponse>> getRechargeHistory(
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(userService.getRechargeHistory(userDetails.getUsername()));
     }
 
     @Operation(summary = "Get transaction status of logged-in user")
     @GetMapping("/transactions")
-    public ResponseEntity<List<?>> getTransactionStatus(
+    public ResponseEntity<List<PaymentResponse>> getTransactionStatus(
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(userService.getTransactionStatus(userDetails.getUsername()));
+    }
+
+    @Operation(summary = "Internal API to get user profile by ID")
+    @GetMapping("/internal/{id}")
+    public ResponseEntity<UserProfileResponse> getUserByIdInternal(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }

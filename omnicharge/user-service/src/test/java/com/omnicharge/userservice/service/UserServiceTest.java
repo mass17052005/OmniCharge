@@ -114,4 +114,15 @@ class UserServiceTest {
         assertThrows(ResourceNotFoundException.class,
                 () -> userService.getTransactionStatus("unknown@omnicharge.com"));
     }
+
+    @Test
+    void deleteUser_success() {
+        when(userRepository.findByEmail("aditya@omnicharge.com"))
+                .thenReturn(Optional.of(mockUser));
+
+        userService.deleteUser("aditya@omnicharge.com");
+
+        verify(userRepository, times(1)).findByEmail("aditya@omnicharge.com");
+        verify(userRepository, times(1)).delete(mockUser);
+    }
 }
