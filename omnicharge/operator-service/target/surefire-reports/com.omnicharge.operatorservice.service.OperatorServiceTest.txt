@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.omnicharge.operatorservice.service.OperatorServiceTest
 -------------------------------------------------------------------------------
-Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.798 s -- in com.omnicharge.operatorservice.service.OperatorServiceTest
+Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.910 s -- in com.omnicharge.operatorservice.service.OperatorServiceTest

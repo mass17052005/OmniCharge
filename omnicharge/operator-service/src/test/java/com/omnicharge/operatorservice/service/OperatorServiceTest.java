@@ -336,4 +336,37 @@ class OperatorServiceTest {
                 operatorService.getPlanByIdAndOperator(1L, 99L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
+
+    // ════════════════════════════════════════════════════════════════
+    // DELETE OPERATOR TESTS
+    // ════════════════════════════════════════════════════════════════
+
+    @Test
+    @DisplayName("Delete operator - success")
+    void deleteOperator_ShouldDeleteOperator_WhenExists() {
+        // Arrange
+        when(operatorRepository.findById(1L))
+                .thenReturn(Optional.of(sampleOperator));
+
+        // Act
+        operatorService.deleteOperator(1L);
+
+        // Assert
+        verify(operatorRepository, times(1)).delete(sampleOperator);
+    }
+
+    @Test
+    @DisplayName("Delete operator - throws 404 when not found")
+    void deleteOperator_ShouldThrowException_WhenNotFound() {
+        // Arrange
+        when(operatorRepository.findById(99L))
+                .thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThatThrownBy(() ->
+                operatorService.deleteOperator(99L))
+                .isInstanceOf(ResourceNotFoundException.class);
+
+        verify(operatorRepository, never()).delete(any());
+    }
 }

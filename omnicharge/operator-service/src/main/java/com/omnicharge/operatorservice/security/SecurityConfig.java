@@ -56,6 +56,11 @@ public class SecurityConfig {
                     "/api/operators/**"
                 ).hasRole("ADMIN")
 
+                .requestMatchers(
+                    HttpMethod.DELETE,
+                    "/api/operators/**"
+                ).hasRole("ADMIN")
+
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter,

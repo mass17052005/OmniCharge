@@ -52,6 +52,13 @@ public class OperatorController {
                 operatorService.updateOperator(id, operatorRequest));
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete operator — ADMIN only")
+    public ResponseEntity<String> deleteOperator(@PathVariable Long id) {
+        operatorService.deleteOperator(id);
+        return ResponseEntity.ok("Operator deleted successfully");
+    }
+
     // ─── Plan APIs ───────────────────────────────────────────────────
 
     @PostMapping("/{id}/plans")
@@ -78,5 +85,12 @@ public class OperatorController {
             @PathVariable Long planId) {
         return ResponseEntity.ok(
                 operatorService.getPlanByIdAndOperator(id, planId));
+    }
+
+    @GetMapping("/plans/{planId}")
+    @Operation(summary = "Get plan by ID globally")
+    public ResponseEntity<PlanResponse> getPlanByIdGlobally(
+            @PathVariable Long planId) {
+        return ResponseEntity.ok(operatorService.getPlanById(planId));
     }
 }

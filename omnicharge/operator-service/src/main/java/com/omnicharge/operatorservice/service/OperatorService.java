@@ -64,6 +64,13 @@ public class OperatorService {
         return mapToOperatorResponse(updatedOperator);
     }
 
+    public void deleteOperator(Long operatorId) {
+        Operator existingOperator = operatorRepository.findById(operatorId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Operator not found with id: " + operatorId));
+        operatorRepository.delete(existingOperator);
+    }
+
     // ─── Plan Methods ────────────────────────────────────────────────
 
     public PlanResponse addPlanToOperator(
@@ -105,6 +112,13 @@ public class OperatorService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Plan not found with id: " + planId
                         + " for operator: " + operatorId));
+        return mapToPlanResponse(foundPlan);
+    }
+
+    public PlanResponse getPlanById(Long planId) {
+        RechargePlan foundPlan = rechargePlanRepository.findById(planId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Plan not found with id: " + planId));
         return mapToPlanResponse(foundPlan);
     }
 
