@@ -2,10 +2,12 @@ E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationserv
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\config\SwaggerConfig.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\controller\NotificationController.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\dto\PaymentEvent.java
+E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\dto\UserProfileResponse.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\entity\Notification.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\enums\NotificationType.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\exception\GlobalExceptionHandler.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\exception\ResourceNotFoundException.java
+E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\feign\UserServiceClient.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\NotificationServiceApplication.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\repository\NotificationRepository.java
 E:\omnicharge\notification-service\src\main\java\com\omnicharge\notificationservice\security\JwtAuthFilter.java
