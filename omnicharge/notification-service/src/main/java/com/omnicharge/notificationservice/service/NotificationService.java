@@ -7,8 +7,13 @@ import com.omnicharge.notificationservice.enums.NotificationType;
 import com.omnicharge.notificationservice.exception.ResourceNotFoundException;
 import com.omnicharge.notificationservice.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import com.omnicharge.notificationservice.feign.UserServiceClient;
+import com.omnicharge.notificationservice.dto.UserProfileResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +24,8 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final UserServiceClient userServiceClient;
+    private final JavaMailSender mailSender;
 
     @RabbitListener(queues = RabbitMQConfig.PAYMENT_SUCCESS_QUEUE)
     public void handlePaymentSuccess(PaymentEvent event) {
@@ -35,6 +42,12 @@ public class NotificationService {
 
         notificationRepository.save(notification);
         log.info("Notification saved for user: {}", event.getUserId());
+
+        sendEmailNotification(
+                event.getUserId(),
+                "Your OmniCharge Payment Success",
+                notification.getMessage()
+        );
     }
 
     @RabbitListener(queues = RabbitMQConfig.PAYMENT_FAILED_QUEUE)
@@ -53,6 +66,12 @@ public class NotificationService {
 
         notificationRepository.save(notification);
         log.info("Notification saved for user: {}", event.getUserId());
+
+        sendEmailNotification(
+                event.getUserId(),
+                "Your OmniCharge Payment Failed",
+                notification.getMessage()
+        );
     }
 
     public List<Notification> getNotificationsByUserId(Long userId) {
@@ -67,5 +86,25 @@ public class NotificationService {
         return notificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Notification not found: " + id));
+    }
+
+    private void sendEmailNotification(Long userId, String subject, String text) {
+        try {
+            UserProfileResponse user = userServiceClient.getUserByIdInternal(userId);
+            if (user != null && user.getEmail() != null) {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setTo(user.getEmail());
+                message.setSubject(subject);
+                message.setText(text);
+                message.setFrom("omnicharge.alerts@gmail.com");
+                
+                mailSender.send(message);
+                log.info("Email successfully sent to {}", user.getEmail());
+            } else {
+                log.warn("Could not fetch user email for userId: {}", userId);
+            }
+        } catch (Exception e) {
+            log.error("Failed to send email to userId {}. Reason: {}", userId, e.getMessage());
+        }
     }
 }
